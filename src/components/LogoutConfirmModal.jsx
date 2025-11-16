@@ -39,13 +39,6 @@ function LogoutConfirmModal({ isOpen, onClose, onConfirm }) {
 
         {/* Info Box */}
         <div className="px-6 pb-6">
-          {/* <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
-            <div className="text-sm text-amber-800">
-              <p className="font-medium mb-1">You will be logged out</p>
-              <p>You'll need to login again to access your account.</p>
-            </div>
-          </div> */}
         </div>
 
         {/* Action Buttons */}
