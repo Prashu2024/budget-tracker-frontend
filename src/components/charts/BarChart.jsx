@@ -46,6 +46,45 @@ function BarChart({ data }) {
     // Color scale
     const color = d3.scaleOrdinal().domain(['income', 'expenses']).range(['#10b981', '#ef4444']);
 
+    // Add legend at top center (horizontal)
+    const legendData = ['income', 'expenses'];
+    const itemSpacing = 120; // horizontal spacing between legend items (adjust if needed)
+    const totalLegendWidth = legendData.length * itemSpacing;
+
+    const legend = svg
+      .append('g')
+      .attr('class', 'legend')
+      // center the whole legend group horizontally; negative y to place it above the bars area
+      .attr('transform', `translate(${width / 2 - totalLegendWidth / 2}, ${-margin.top / 2})`);
+
+    const legendItems = legend
+      .selectAll('g')
+      .data(legendData)
+      .enter()
+      .append('g')
+      .attr('transform', (d, i) => `translate(${i * itemSpacing}, 0)`);
+
+    // Draw legend colored squares
+    legendItems
+      .append('rect')
+      .attr('width', 16)
+      .attr('height', 16)
+      .attr('rx', 3)
+      .attr('y', -8) // vertically center relative to text baseline
+      .attr('fill', (d) => color(d));
+
+    // Add legend text
+    legendItems
+      .append('text')
+      .attr('x', 22)
+      .attr('y', 0)
+      .attr('dy', '.35em')
+      .style('font-size', '12px')
+      .style('fill', '#374151')
+      .text((d) => d.charAt(0).toUpperCase() + d.slice(1));
+
+
+
     // Add X axis
     svg
       .append('g')
@@ -128,29 +167,29 @@ function BarChart({ data }) {
     });
 
     // Add legend
-    const legend = svg
-      .selectAll('.legend')
-      .data(['income', 'expenses'])
-      .enter()
-      .append('g')
-      .attr('class', 'legend')
-      .attr('transform', (d, i) => `translate(${width - 100}, ${i * 25})`);
+    // const legend = svg
+    //   .selectAll('.legend')
+    //   .data(['income', 'expenses'])
+    //   .enter()
+    //   .append('g')
+    //   .attr('class', 'legend')
+    //   .attr('transform', (d, i) => `translate(${width - 100}, ${i * 25})`);
 
-    legend
-      .append('rect')
-      .attr('width', 18)
-      .attr('height', 18)
-      .attr('fill', color)
-      .attr('rx', 3);
+    // legend
+    //   .append('rect')
+    //   .attr('width', 18)
+    //   .attr('height', 18)
+    //   .attr('fill', color)
+    //   .attr('rx', 3);
 
-    legend
-      .append('text')
-      .attr('x', 24)
-      .attr('y', 9)
-      .attr('dy', '.35em')
-      .style('font-size', '12px')
-      .style('fill', '#374151')
-      .text((d) => d.charAt(0).toUpperCase() + d.slice(1));
+    // legend
+    //   .append('text')
+    //   .attr('x', 24)
+    //   .attr('y', 9)
+    //   .attr('dy', '.35em')
+    //   .style('font-size', '12px')
+    //   .style('fill', '#374151')
+    //   .text((d) => d.charAt(0).toUpperCase() + d.slice(1));
 
   }, [data]);
 

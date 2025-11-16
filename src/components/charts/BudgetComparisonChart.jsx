@@ -93,14 +93,16 @@ function BudgetComparisonChart({ budget, expenses }) {
       .attr('dx', 10)
       .style('font-size', '14px')
       .style('font-weight', 'bold')
-      .style('fill', 'white')
+      .style('fill', '#374151')
       .style('opacity', 0)
       .text((d) => `₹${d.value.toFixed(2)}`)
       .transition()
       .delay(400)
       .duration(400)
-      .attr('x', (d) => x(d.value) - 10)
-      .attr('text-anchor', 'end')
+      // .attr('x', (d) => x(d.value) - 10)
+      // .attr('text-anchor', 'end')
+      .attr('x', (d) => x(d.value) + 8)
+      .attr('text-anchor', 'start')
       .style('opacity', 1);
 
     // Add difference indicator

@@ -1,7 +1,15 @@
-import { useEffect, useState } from 'react';
-import { Plus, Edit2, Trash2, Search, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
-import { transactionAPI, categoryAPI } from '../api/axios';
-import TransactionModal from '../components/TransactionModal';
+import { useEffect, useState } from "react";
+import {
+  Plus,
+  Edit2,
+  Trash2,
+  Search,
+  Filter,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import { transactionAPI, categoryAPI } from "../api/axios";
+import TransactionModal from "../components/TransactionModal";
 
 function Transactions() {
   const [transactions, setTransactions] = useState([]);
@@ -17,13 +25,13 @@ function Transactions() {
   });
 
   const [filters, setFilters] = useState({
-    search: '',
-    type: '',
-    category: '',
-    start_date: '',
-    end_date: '',
-    min_amount: '',
-    max_amount: '',
+    search: "",
+    type: "",
+    category: "",
+    start_date: "",
+    end_date: "",
+    min_amount: "",
+    max_amount: "",
   });
 
   useEffect(() => {
@@ -39,7 +47,7 @@ function Transactions() {
       const response = await categoryAPI.getAll();
       setCategories(response.data.results || response.data);
     } catch (error) {
-      console.error('Failed to fetch categories:', error);
+      console.error("Failed to fetch categories:", error);
     }
   };
 
@@ -49,7 +57,7 @@ function Transactions() {
       const params = {
         page: pagination.current,
         ...Object.fromEntries(
-          Object.entries(filters).filter(([_, v]) => v !== '')
+          Object.entries(filters).filter(([_, v]) => v !== "")
         ),
       };
       const response = await transactionAPI.getAll(params);
@@ -61,7 +69,7 @@ function Transactions() {
         current: pagination.current,
       });
     } catch (error) {
-      console.error('Failed to fetch transactions:', error);
+      console.error("Failed to fetch transactions:", error);
     } finally {
       setLoading(false);
     }
@@ -73,14 +81,15 @@ function Transactions() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this transaction?')) return;
+    if (!window.confirm("Are you sure you want to delete this transaction?"))
+      return;
 
     try {
       await transactionAPI.delete(id);
       fetchTransactions();
     } catch (error) {
-      console.error('Failed to delete transaction:', error);
-      alert('Failed to delete transaction');
+      console.error("Failed to delete transaction:", error);
+      alert("Failed to delete transaction");
     }
   };
 
@@ -96,18 +105,18 @@ function Transactions() {
   };
 
   const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
       minimumFractionDigits: 0,
     }).format(amount);
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-IN', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
+    return new Date(dateString).toLocaleDateString("en-IN", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
     });
   };
 
@@ -138,13 +147,15 @@ function Transactions() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Search
+            </label>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
                 type="text"
                 value={filters.search}
-                onChange={(e) => handleFilterChange('search', e.target.value)}
+                onChange={(e) => handleFilterChange("search", e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                 placeholder="Search transactions..."
               />
@@ -152,10 +163,12 @@ function Transactions() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Type</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Type
+            </label>
             <select
               value={filters.type}
-              onChange={(e) => handleFilterChange('type', e.target.value)}
+              onChange={(e) => handleFilterChange("type", e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             >
               <option value="">All Types</option>
@@ -165,10 +178,12 @@ function Transactions() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Category
+            </label>
             <select
               value={filters.category}
-              onChange={(e) => handleFilterChange('category', e.target.value)}
+              onChange={(e) => handleFilterChange("category", e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             >
               <option value="">All Categories</option>
@@ -181,42 +196,50 @@ function Transactions() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Start Date
+            </label>
             <input
               type="date"
               value={filters.start_date}
-              onChange={(e) => handleFilterChange('start_date', e.target.value)}
+              onChange={(e) => handleFilterChange("start_date", e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">End Date</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              End Date
+            </label>
             <input
               type="date"
               value={filters.end_date}
-              onChange={(e) => handleFilterChange('end_date', e.target.value)}
+              onChange={(e) => handleFilterChange("end_date", e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Min Amount</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Min Amount
+            </label>
             <input
               type="number"
               value={filters.min_amount}
-              onChange={(e) => handleFilterChange('min_amount', e.target.value)}
+              onChange={(e) => handleFilterChange("min_amount", e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               placeholder="0"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Max Amount</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Max Amount
+            </label>
             <input
               type="number"
               value={filters.max_amount}
-              onChange={(e) => handleFilterChange('max_amount', e.target.value)}
+              onChange={(e) => handleFilterChange("max_amount", e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               placeholder="0"
             />
@@ -227,8 +250,36 @@ function Transactions() {
       {/* Transactions List */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         {loading ? (
-          <div className="flex items-center justify-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+          // <div className="flex items-center justify-center h-64">
+          //   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+          // </div>
+          <div>
+            {/* Table Header Skeleton */}
+            <div className="bg-gray-50 border-b border-gray-200 px-6 py-3">
+              <div className="flex gap-4">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="h-4 flex-1 bg-gray-200 rounded animate-pulse"
+                  ></div>
+                ))}
+              </div>
+            </div>
+            {/* Table Rows Skeleton */}
+            <div className="divide-y divide-gray-200">
+              {Array.from({ length: 10 }).map((_, rowIndex) => (
+                <div key={rowIndex} className="px-6 py-4">
+                  <div className="flex gap-4 items-center">
+                    <div className="h-4 w-24 bg-gray-200 rounded animate-pulse"></div>
+                    <div className="h-6 w-16 bg-gray-200 rounded-full animate-pulse"></div>
+                    <div className="h-4 w-32 bg-gray-200 rounded animate-pulse"></div>
+                    <div className="h-4 flex-1 bg-gray-200 rounded animate-pulse"></div>
+                    <div className="h-4 w-24 bg-gray-200 rounded animate-pulse"></div>
+                    <div className="h-4 w-16 bg-gray-200 rounded animate-pulse"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         ) : transactions.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-64 text-gray-500">
@@ -268,34 +319,39 @@ function Transactions() {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {transactions.map((transaction) => (
-                    <tr key={transaction.id} className="hover:bg-gray-50 transition">
+                    <tr
+                      key={transaction.id}
+                      className="hover:bg-gray-50 transition"
+                    >
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         {formatDate(transaction.date)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
                           className={`px-2 py-1 text-xs font-semibold rounded-full ${
-                            transaction.type === 'income'
-                              ? 'bg-green-100 text-green-800'
-                              : 'bg-red-100 text-red-800'
+                            transaction.type === "income"
+                              ? "bg-green-100 text-green-800"
+                              : "bg-red-100 text-red-800"
                           }`}
                         >
                           {transaction.type}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {transaction.category_name || 'N/A'}
+                        {transaction.category_name || "N/A"}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-900 max-w-xs truncate">
-                        {transaction.description || '-'}
+                        {transaction.description || "-"}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-right font-semibold">
                         <span
                           className={
-                            transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
+                            transaction.type === "income"
+                              ? "text-green-600"
+                              : "text-red-600"
                           }
                         >
-                          {transaction.type === 'income' ? '+' : '-'}
+                          {transaction.type === "income" ? "+" : "-"}
                           {formatCurrency(transaction.amount)}
                         </span>
                       </td>
@@ -323,12 +379,16 @@ function Transactions() {
             {totalPages > 1 && (
               <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
                 <div className="text-sm text-gray-700">
-                  Showing page {pagination.current} of {totalPages} ({pagination.count} total)
+                  Showing page {pagination.current} of {totalPages} (
+                  {pagination.count} total)
                 </div>
                 <div className="flex gap-2">
                   <button
                     onClick={() =>
-                      setPagination({ ...pagination, current: pagination.current - 1 })
+                      setPagination({
+                        ...pagination,
+                        current: pagination.current - 1,
+                      })
                     }
                     disabled={!pagination.previous}
                     className="flex items-center gap-1 px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition"
@@ -338,7 +398,10 @@ function Transactions() {
                   </button>
                   <button
                     onClick={() =>
-                      setPagination({ ...pagination, current: pagination.current + 1 })
+                      setPagination({
+                        ...pagination,
+                        current: pagination.current + 1,
+                      })
                     }
                     disabled={!pagination.next}
                     className="flex items-center gap-1 px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition"

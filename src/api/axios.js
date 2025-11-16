@@ -24,14 +24,35 @@ api.interceptors.request.use(
 );
 
 // Handle auth errors
+// api.interceptors.response.use(
+//   (response) => response,
+//   (error) => {
+//     if (error.response?.status === 401) {
+//       localStorage.removeItem('token');
+//       localStorage.removeItem('user');
+//       window.location.href = '/login';
+//     }
+//     return Promise.reject(error);
+//   }
+// );
+
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const status = error.response?.status;
+    const req = error.config || {};
+    const url = req.url || '';
+
+    // Skip auto-redirect for auth endpoints that should be handled by components
+    const isAuthEndpoint = /\/auth\/(login|logout|user)\/?$/.test(url);
+
+    if (status === 401 && !isAuthEndpoint) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
+      // use location assign to replace current history (optional)
       window.location.href = '/login';
     }
+
     return Promise.reject(error);
   }
 );

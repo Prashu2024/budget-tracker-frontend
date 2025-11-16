@@ -1,9 +1,11 @@
 import { Outlet, NavLink } from 'react-router-dom';
 import { LayoutDashboard, Receipt, PiggyBank,Tag, LogOut, Menu, X, DollarSign } from 'lucide-react';
 import { useState } from 'react';
+import LogoutConfirmModal from './LogoutConfirmModal';
 
 function Layout({ user, onLogout }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const navigation = [
     { name: 'Dashboard', to: '/dashboard', icon: LayoutDashboard },
@@ -55,7 +57,8 @@ function Layout({ user, onLogout }) {
                 <p className="text-xs text-gray-500">{user?.email}</p>
               </div>
               <button
-                onClick={onLogout}
+                // onClick={onLogout}
+                onClick={() => setShowLogoutModal(true)}
                 className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition"
               >
                 <LogOut className="w-5 h-5" />
@@ -101,7 +104,19 @@ function Layout({ user, onLogout }) {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Outlet />
       </main>
+
+      <LogoutConfirmModal
+  isOpen={showLogoutModal}
+  onClose={() => setShowLogoutModal(false)}
+  onConfirm={() => {
+    setShowLogoutModal(false);
+    onLogout();   // Call actual logout
+  }}
+/>
+
     </div>
+
+    
   );
 }
 

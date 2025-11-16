@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
-import { TrendingUp, TrendingDown, Wallet, AlertCircle } from 'lucide-react';
-import { dashboardAPI } from '../api/axios';
-import PieChart from '../components/charts/PieChart';
-import BarChart from '../components/charts/BarChart';
+import { useEffect, useState } from "react";
+import { TrendingUp, TrendingDown, Wallet, AlertCircle } from "lucide-react";
+import { dashboardAPI } from "../api/axios";
+import PieChart from "../components/charts/PieChart";
+import BarChart from "../components/charts/BarChart";
 
 function Dashboard() {
   const [data, setData] = useState(null);
@@ -20,8 +20,8 @@ function Dashboard() {
       setData(response.data);
       setError(null);
     } catch (err) {
-      setError('Failed to load dashboard data');
-      console.error('Dashboard error:', err);
+      setError("Failed to load dashboard data");
+      console.error("Dashboard error:", err);
     } finally {
       setLoading(false);
     }
@@ -29,8 +29,65 @@ function Dashboard() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      // <div className="flex items-center justify-center h-64">
+      //   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      // </div>
+      <div className="space-y-6">
+        {/* Header Skeleton */}
+        <div>
+          <div className="h-8 w-48 bg-gray-200 rounded animate-pulse mb-2"></div>
+          <div className="h-4 w-64 bg-gray-200 rounded animate-pulse"></div>
+        </div>
+
+        {/* Stats Grid Skeleton */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div
+              key={i}
+              className="bg-white rounded-xl shadow-sm p-6 border border-gray-100"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <div className="h-4 w-24 bg-gray-200 rounded animate-pulse mb-3"></div>
+                  <div className="h-8 w-32 bg-gray-200 rounded animate-pulse"></div>
+                </div>
+                <div className="w-12 h-12 bg-gray-200 rounded-lg animate-pulse"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Budget Card Skeleton */}
+        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <div className="flex items-center justify-between mb-4">
+            <div className="h-6 w-32 bg-gray-200 rounded animate-pulse"></div>
+            <div className="h-4 w-24 bg-gray-200 rounded animate-pulse"></div>
+          </div>
+          <div className="w-full h-4 bg-gray-200 rounded-full animate-pulse mb-2"></div>
+          <div className="flex justify-between">
+            <div className="h-4 w-20 bg-gray-200 rounded animate-pulse"></div>
+            <div className="h-4 w-32 bg-gray-200 rounded animate-pulse"></div>
+          </div>
+        </div>
+
+        {/* Charts Grid Skeleton */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {Array.from({ length: 2 }).map((_, i) => (
+            <div
+              key={i}
+              className="bg-white rounded-xl shadow-sm p-6 border border-gray-100"
+            >
+              <div className="h-6 w-48 bg-gray-200 rounded animate-pulse mb-4"></div>
+              <div className="w-full h-64 bg-gray-200 rounded animate-pulse"></div>
+            </div>
+          ))}
+        </div>
+
+        {/* Monthly Trend Skeleton */}
+        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <div className="h-6 w-48 bg-gray-200 rounded animate-pulse mb-4"></div>
+          <div className="w-full h-64 bg-gray-200 rounded animate-pulse"></div>
+        </div>
       </div>
     );
   }
@@ -44,37 +101,37 @@ function Dashboard() {
   }
 
   const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
       minimumFractionDigits: 0,
     }).format(amount);
   };
 
   const stats = [
     {
-      name: 'Total Income',
+      name: "Total Income",
       value: formatCurrency(data?.total_income || 0),
       icon: TrendingUp,
-      color: 'bg-green-500',
-      bgColor: 'bg-green-50',
-      textColor: 'text-green-700',
+      color: "bg-green-500",
+      bgColor: "bg-green-50",
+      textColor: "text-green-700",
     },
     {
-      name: 'Total Expenses',
+      name: "Total Expenses",
       value: formatCurrency(data?.total_expenses || 0),
       icon: TrendingDown,
-      color: 'bg-red-500',
-      bgColor: 'bg-red-50',
-      textColor: 'text-red-700',
+      color: "bg-red-500",
+      bgColor: "bg-red-50",
+      textColor: "text-red-700",
     },
     {
-      name: 'Balance',
+      name: "Balance",
       value: formatCurrency(data?.balance || 0),
       icon: Wallet,
-      color: 'bg-blue-500',
-      bgColor: 'bg-blue-50',
-      textColor: 'text-blue-700',
+      color: "bg-blue-500",
+      bgColor: "bg-blue-50",
+      textColor: "text-blue-700",
     },
   ];
 
@@ -89,11 +146,16 @@ function Dashboard() {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {stats.map((stat) => (
-          <div key={stat.name} className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <div
+            key={stat.name}
+            className="bg-white rounded-xl shadow-sm p-6 border border-gray-100"
+          >
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">{stat.name}</p>
-                <p className={`text-2xl font-bold mt-2 ${stat.textColor}`}>{stat.value}</p>
+                <p className={`text-2xl font-bold mt-2 ${stat.textColor}`}>
+                  {stat.value}
+                </p>
               </div>
               <div className={`${stat.bgColor} p-3 rounded-lg`}>
                 <stat.icon className={`w-6 h-6 ${stat.textColor}`} />
@@ -107,7 +169,9 @@ function Dashboard() {
       {data?.monthly_budget && (
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">Monthly Budget</h3>
+            <h3 className="text-lg font-semibold text-gray-900">
+              Monthly Budget
+            </h3>
             <span className="text-sm text-gray-600">
               {formatCurrency(data.budget_remaining || 0)} remaining
             </span>
@@ -117,12 +181,14 @@ function Dashboard() {
               <div
                 className={`h-full rounded-full transition-all ${
                   (data.budget_percentage || 0) > 100
-                    ? 'bg-red-500'
+                    ? "bg-red-500"
                     : (data.budget_percentage || 0) > 80
-                    ? 'bg-yellow-500'
-                    : 'bg-green-500'
+                    ? "bg-yellow-500"
+                    : "bg-green-500"
                 }`}
-                style={{ width: `${Math.min(data.budget_percentage || 0, 100)}%` }}
+                style={{
+                  width: `${Math.min(data.budget_percentage || 0, 100)}%`,
+                }}
               ></div>
             </div>
             <div className="flex justify-between mt-2 text-sm text-gray-600">
@@ -133,7 +199,10 @@ function Dashboard() {
           {(data.budget_percentage || 0) > 100 && (
             <div className="mt-4 flex items-start gap-2 text-sm text-red-700 bg-red-50 p-3 rounded-lg">
               <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
-              <span>You've exceeded your monthly budget by {formatCurrency(Math.abs(data.budget_remaining || 0))}</span>
+              <span>
+                You've exceeded your monthly budget by{" "}
+                {formatCurrency(Math.abs(data.budget_remaining || 0))}
+              </span>
             </div>
           )}
         </div>
@@ -143,14 +212,16 @@ function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Income by Category */}
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Income by Category</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Income by Category
+          </h3>
           {data?.income_by_category?.length > 0 ? (
             <PieChart
-              data={data.income_by_category.map(item => ({
+              data={data.income_by_category.map((item) => ({
                 label: item.category__name,
-                value: parseFloat(item.total)
+                value: parseFloat(item.total),
               }))}
-              colors={['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444']}
+              colors={["#10b981", "#3b82f6", "#8b5cf6", "#f59e0b", "#ef4444"]}
             />
           ) : (
             <div className="flex items-center justify-center h-64 text-gray-500">
@@ -161,14 +232,16 @@ function Dashboard() {
 
         {/* Expenses by Category */}
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Expenses by Category</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Expenses by Category
+          </h3>
           {data?.expenses_by_category?.length > 0 ? (
             <PieChart
-              data={data.expenses_by_category.map(item => ({
+              data={data.expenses_by_category.map((item) => ({
                 label: item.category__name,
-                value: parseFloat(item.total)
+                value: parseFloat(item.total),
               }))}
-              colors={['#ef4444', '#f59e0b', '#eab308', '#84cc16', '#22c55e']}
+              colors={["#ef4444", "#f59e0b", "#eab308", "#84cc16", "#22c55e"]}
             />
           ) : (
             <div className="flex items-center justify-center h-64 text-gray-500">
@@ -180,7 +253,9 @@ function Dashboard() {
 
       {/* Monthly Trend */}
       <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Monthly Trend</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          Monthly Trend
+        </h3>
         {data?.monthly_trend?.length > 0 ? (
           <BarChart data={data.monthly_trend} />
         ) : (

@@ -1,8 +1,15 @@
-import { useEffect, useState } from 'react';
-import { Plus, Edit2, Trash2, TrendingDown, AlertCircle, CheckCircle } from 'lucide-react';
-import { budgetAPI, transactionAPI } from '../api/axios';
-import BudgetModal from '../components/BudgetModal';
-import BudgetComparisonChart from '../components/charts/BudgetComparisonChart';
+import { useEffect, useState } from "react";
+import {
+  Plus,
+  Edit2,
+  Trash2,
+  TrendingDown,
+  AlertCircle,
+  CheckCircle,
+} from "lucide-react";
+import { budgetAPI, transactionAPI } from "../api/axios";
+import BudgetModal from "../components/BudgetModal";
+import BudgetComparisonChart from "../components/charts/BudgetComparisonChart";
 
 function Budget() {
   const [budgets, setBudgets] = useState([]);
@@ -22,7 +29,7 @@ function Budget() {
       const response = await budgetAPI.getAll();
       setBudgets(response.data.results || response.data);
     } catch (error) {
-      console.error('Failed to fetch budgets:', error);
+      console.error("Failed to fetch budgets:", error);
     }
   };
 
@@ -35,9 +42,15 @@ function Budget() {
 
       // Fetch current month expenses
       const transResponse = await transactionAPI.getAll({
-        type: 'expense',
-        start_date: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`,
-        end_date: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()}`,
+        type: "expense",
+        start_date: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(
+          2,
+          "0"
+        )}-01`,
+        end_date: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(
+          2,
+          "0"
+        )}-${new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()}`,
       });
 
       const expenses = (transResponse.data.results || []).reduce(
@@ -46,7 +59,7 @@ function Budget() {
       );
       setCurrentExpenses(expenses);
     } catch (error) {
-      console.error('Failed to fetch current budget:', error);
+      console.error("Failed to fetch current budget:", error);
       setCurrentBudget(null);
     } finally {
       setLoading(false);
@@ -54,7 +67,7 @@ function Budget() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this budget?')) return;
+    if (!window.confirm("Are you sure you want to delete this budget?")) return;
 
     try {
       await budgetAPI.delete(id);
@@ -63,8 +76,8 @@ function Budget() {
         setCurrentBudget(null);
       }
     } catch (error) {
-      console.error('Failed to delete budget:', error);
-      alert('Failed to delete budget');
+      console.error("Failed to delete budget:", error);
+      alert("Failed to delete budget");
     }
   };
 
@@ -81,17 +94,27 @@ function Budget() {
   };
 
   const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
       minimumFractionDigits: 0,
     }).format(amount);
   };
 
   const getMonthName = (month) => {
     const months = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
     ];
     return months[month - 1];
   };
@@ -100,15 +123,21 @@ function Budget() {
     ? (currentExpenses / parseFloat(currentBudget.amount)) * 100
     : 0;
 
-  const remaining = currentBudget ? parseFloat(currentBudget.amount) - currentExpenses : 0;
+  const remaining = currentBudget
+    ? parseFloat(currentBudget.amount) - currentExpenses
+    : 0;
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Budget Management</h1>
-          <p className="text-gray-600 mt-1">Set and track your monthly budgets</p>
+          <h1 className="text-3xl font-bold text-gray-900">
+            Budget Management
+          </h1>
+          <p className="text-gray-600 mt-1">
+            Set and track your monthly budgets
+          </p>
         </div>
         <button
           onClick={() => setModalOpen(true)}
@@ -121,8 +150,51 @@ function Budget() {
 
       {/* Current Month Budget Card */}
       {loading ? (
-        <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+        // <div className="flex items-center justify-center h-64">
+        //   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+        // </div>
+
+        <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl shadow-xl p-8 text-white">
+          <div className="flex items-start justify-between mb-6">
+            <div>
+              <div className="h-8 w-48 bg-white/20 rounded animate-pulse mb-2"></div>
+              <div className="h-4 w-32 bg-white/20 rounded animate-pulse"></div>
+            </div>
+            <div className="flex gap-2">
+              <div className="w-10 h-10 bg-white/20 rounded-lg animate-pulse"></div>
+              <div className="w-10 h-10 bg-white/20 rounded-lg animate-pulse"></div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div
+                key={i}
+                className="bg-white/10 rounded-xl p-4 backdrop-blur-sm"
+              >
+                <div className="h-3 w-20 bg-white/20 rounded animate-pulse mb-2"></div>
+                <div className="h-8 w-32 bg-white/30 rounded animate-pulse"></div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mb-4">
+            <div className="flex justify-between items-center mb-2">
+              <div className="h-4 w-24 bg-white/20 rounded animate-pulse"></div>
+              <div className="h-4 w-16 bg-white/20 rounded animate-pulse"></div>
+            </div>
+            <div className="w-full h-4 bg-white/20 rounded-full animate-pulse"></div>
+          </div>
+
+          <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20">
+            <div className="flex items-start gap-3">
+              <div className="w-5 h-5 bg-white/20 rounded animate-pulse"></div>
+              <div className="flex-1">
+                <div className="h-4 w-32 bg-white/20 rounded animate-pulse mb-2"></div>
+                <div className="h-3 w-full bg-white/20 rounded animate-pulse"></div>
+              </div>
+            </div>
+          </div>
         </div>
       ) : currentBudget ? (
         <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl shadow-xl p-8 text-white">
@@ -152,15 +224,23 @@ function Budget() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <div className="bg-white bg-opacity-10 rounded-xl p-4 backdrop-blur-sm">
               <p className="text-indigo-100 text-sm mb-1">Budget Amount</p>
-              <p className="text-3xl font-bold">{formatCurrency(currentBudget.amount)}</p>
+              <p className="text-3xl font-bold">
+                {formatCurrency(currentBudget.amount)}
+              </p>
             </div>
             <div className="bg-white bg-opacity-10 rounded-xl p-4 backdrop-blur-sm">
               <p className="text-indigo-100 text-sm mb-1">Spent</p>
-              <p className="text-3xl font-bold">{formatCurrency(currentExpenses)}</p>
+              <p className="text-3xl font-bold">
+                {formatCurrency(currentExpenses)}
+              </p>
             </div>
             <div className="bg-white bg-opacity-10 rounded-xl p-4 backdrop-blur-sm">
               <p className="text-indigo-100 text-sm mb-1">Remaining</p>
-              <p className={`text-3xl font-bold ${remaining < 0 ? 'text-red-300' : ''}`}>
+              <p
+                className={`text-3xl font-bold ${
+                  remaining < 0 ? "text-red-300" : ""
+                }`}
+              >
                 {formatCurrency(remaining)}
               </p>
             </div>
@@ -169,16 +249,18 @@ function Budget() {
           <div>
             <div className="flex justify-between items-center mb-2">
               <span className="text-sm font-medium">Budget Usage</span>
-              <span className="text-sm font-bold">{budgetPercentage.toFixed(1)}%</span>
+              <span className="text-sm font-bold">
+                {budgetPercentage.toFixed(1)}%
+              </span>
             </div>
             <div className="w-full bg-white bg-opacity-20 rounded-full h-4 overflow-hidden backdrop-blur-sm">
               <div
                 className={`h-full transition-all ${
                   budgetPercentage > 100
-                    ? 'bg-red-400'
+                    ? "bg-red-400"
                     : budgetPercentage > 80
-                    ? 'bg-yellow-400'
-                    : 'bg-green-400'
+                    ? "bg-yellow-400"
+                    : "bg-green-400"
                 }`}
                 style={{ width: `${Math.min(budgetPercentage, 100)}%` }}
               ></div>
@@ -191,7 +273,9 @@ function Budget() {
               <div>
                 <p className="font-semibold">Budget Exceeded</p>
                 <p className="text-sm text-indigo-100 mt-1">
-                  You've exceeded your budget by {formatCurrency(Math.abs(remaining))}. Consider reviewing your expenses.
+                  You've exceeded your budget by{" "}
+                  {formatCurrency(Math.abs(remaining))}. Consider reviewing your
+                  expenses.
                 </p>
               </div>
             </div>
@@ -201,7 +285,8 @@ function Budget() {
               <div>
                 <p className="font-semibold">Approaching Limit</p>
                 <p className="text-sm text-indigo-100 mt-1">
-                  You're close to your budget limit. Only {formatCurrency(remaining)} remaining.
+                  You're close to your budget limit. Only{" "}
+                  {formatCurrency(remaining)} remaining.
                 </p>
               </div>
             </div>
@@ -220,7 +305,9 @@ function Budget() {
       ) : (
         <div className="bg-white rounded-xl shadow-sm p-12 text-center border border-gray-100">
           <TrendingDown className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">No Budget Set</h3>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">
+            No Budget Set
+          </h3>
           <p className="text-gray-600 mb-6">
             Set a budget for this month to start tracking your expenses
           </p>
@@ -237,7 +324,9 @@ function Budget() {
       {/* Budget vs Expenses Chart */}
       {currentBudget && (
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Budget vs Actual Expenses</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Budget vs Actual Expenses
+          </h3>
           <BudgetComparisonChart
             budget={parseFloat(currentBudget.amount)}
             expenses={currentExpenses}
@@ -302,7 +391,9 @@ function Budget() {
       </div>
 
       {/* Budget Modal */}
-      {modalOpen && <BudgetModal budget={editingBudget} onClose={handleModalClose} />}
+      {modalOpen && (
+        <BudgetModal budget={editingBudget} onClose={handleModalClose} />
+      )}
     </div>
   );
 }

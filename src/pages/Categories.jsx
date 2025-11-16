@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
-import { Plus, Edit2, Trash2, Tag } from 'lucide-react';
-import { categoryAPI } from '../api/axios';
-import CategoryModal from '../components/CategoryModal';
+import { useEffect, useState } from "react";
+import { Plus, Edit2, Trash2, Tag } from "lucide-react";
+import { categoryAPI } from "../api/axios";
+import CategoryModal from "../components/CategoryModal";
 
 function Categories() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
-  const [filter, setFilter] = useState('all'); // all, income, expense
+  const [filter, setFilter] = useState("all"); // all, income, expense
 
   useEffect(() => {
     fetchCategories();
@@ -17,18 +17,22 @@ function Categories() {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const params = filter !== 'all' ? { type: filter } : {};
+      const params = filter !== "all" ? { type: filter } : {};
       const response = await categoryAPI.getAll(params);
       setCategories(response.data.results || response.data);
     } catch (error) {
-      console.error('Failed to fetch categories:', error);
+      console.error("Failed to fetch categories:", error);
     } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this category? This action cannot be undone.')) {
+    if (
+      !window.confirm(
+        "Are you sure you want to delete this category? This action cannot be undone."
+      )
+    ) {
       return;
     }
 
@@ -36,8 +40,10 @@ function Categories() {
       await categoryAPI.delete(id);
       fetchCategories();
     } catch (error) {
-      console.error('Failed to delete category:', error);
-      alert('Failed to delete category. It may be in use by existing transactions.');
+      console.error("Failed to delete category:", error);
+      alert(
+        "Failed to delete category. It may be in use by existing transactions."
+      );
     }
   };
 
@@ -52,8 +58,8 @@ function Categories() {
     fetchCategories();
   };
 
-  const incomeCategories = categories.filter(cat => cat.type === 'income');
-  const expenseCategories = categories.filter(cat => cat.type === 'expense');
+  const incomeCategories = categories.filter((cat) => cat.type === "income");
+  const expenseCategories = categories.filter((cat) => cat.type === "expense");
 
   return (
     <div className="space-y-6">
@@ -61,7 +67,9 @@ function Categories() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Categories</h1>
-          <p className="text-gray-600 mt-1">Organize your income and expenses</p>
+          <p className="text-gray-600 mt-1">
+            Organize your income and expenses
+          </p>
         </div>
         <button
           onClick={() => setModalOpen(true)}
@@ -75,31 +83,31 @@ function Categories() {
       {/* Filter Tabs */}
       <div className="bg-white rounded-xl shadow-sm p-2 border border-gray-100 inline-flex gap-2">
         <button
-          onClick={() => setFilter('all')}
+          onClick={() => setFilter("all")}
           className={`px-4 py-2 rounded-lg font-medium transition ${
-            filter === 'all'
-              ? 'bg-indigo-600 text-white'
-              : 'text-gray-700 hover:bg-gray-100'
+            filter === "all"
+              ? "bg-indigo-600 text-white"
+              : "text-gray-700 hover:bg-gray-100"
           }`}
         >
           All Categories
         </button>
         <button
-          onClick={() => setFilter('income')}
+          onClick={() => setFilter("income")}
           className={`px-4 py-2 rounded-lg font-medium transition ${
-            filter === 'income'
-              ? 'bg-green-600 text-white'
-              : 'text-gray-700 hover:bg-gray-100'
+            filter === "income"
+              ? "bg-green-600 text-white"
+              : "text-gray-700 hover:bg-gray-100"
           }`}
         >
           Income
         </button>
         <button
-          onClick={() => setFilter('expense')}
+          onClick={() => setFilter("expense")}
           className={`px-4 py-2 rounded-lg font-medium transition ${
-            filter === 'expense'
-              ? 'bg-red-600 text-white'
-              : 'text-gray-700 hover:bg-gray-100'
+            filter === "expense"
+              ? "bg-red-600 text-white"
+              : "text-gray-700 hover:bg-gray-100"
           }`}
         >
           Expense
@@ -107,13 +115,73 @@ function Categories() {
       </div>
 
       {loading ? (
-        <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+        // <div className="flex items-center justify-center h-64">
+        //   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+        // </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Income Categories Skeleton */}
+          {(filter === "all" || filter === "income") && (
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100">
+              <div className="px-6 py-4 border-b border-gray-200 bg-green-50">
+                <div className="h-6 w-48 bg-green-200 rounded animate-pulse"></div>
+              </div>
+              <div className="p-6 space-y-3">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center justify-between p-4 border border-gray-200 rounded-lg"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-gray-200 rounded-lg animate-pulse"></div>
+                      <div>
+                        <div className="h-4 w-32 bg-gray-200 rounded animate-pulse mb-2"></div>
+                        <div className="h-3 w-24 bg-gray-200 rounded animate-pulse"></div>
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <div className="w-8 h-8 bg-gray-200 rounded-lg animate-pulse"></div>
+                      <div className="w-8 h-8 bg-gray-200 rounded-lg animate-pulse"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Expense Categories Skeleton */}
+          {(filter === "all" || filter === "expense") && (
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100">
+              <div className="px-6 py-4 border-b border-gray-200 bg-red-50">
+                <div className="h-6 w-48 bg-red-200 rounded animate-pulse"></div>
+              </div>
+              <div className="p-6 space-y-3">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center justify-between p-4 border border-gray-200 rounded-lg"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-gray-200 rounded-lg animate-pulse"></div>
+                      <div>
+                        <div className="h-4 w-32 bg-gray-200 rounded animate-pulse mb-2"></div>
+                        <div className="h-3 w-24 bg-gray-200 rounded animate-pulse"></div>
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <div className="w-8 h-8 bg-gray-200 rounded-lg animate-pulse"></div>
+                      <div className="w-8 h-8 bg-gray-200 rounded-lg animate-pulse"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Income Categories */}
-          {(filter === 'all' || filter === 'income') && (
+          {(filter === "all" || filter === "income") && (
             <div className="bg-white rounded-xl shadow-sm border border-gray-100">
               <div className="px-6 py-4 border-b border-gray-200 bg-green-50">
                 <h3 className="text-lg font-semibold text-green-900 flex items-center gap-2">
@@ -144,9 +212,14 @@ function Categories() {
                             <Tag className="w-5 h-5 text-green-600" />
                           </div>
                           <div>
-                            <p className="font-medium text-gray-900">{category.name}</p>
+                            <p className="font-medium text-gray-900">
+                              {category.name}
+                            </p>
                             <p className="text-xs text-gray-500">
-                              Created {new Date(category.created_at).toLocaleDateString()}
+                              Created{" "}
+                              {new Date(
+                                category.created_at
+                              ).toLocaleDateString()}
                             </p>
                           </div>
                         </div>
@@ -173,7 +246,7 @@ function Categories() {
           )}
 
           {/* Expense Categories */}
-          {(filter === 'all' || filter === 'expense') && (
+          {(filter === "all" || filter === "expense") && (
             <div className="bg-white rounded-xl shadow-sm border border-gray-100">
               <div className="px-6 py-4 border-b border-gray-200 bg-red-50">
                 <h3 className="text-lg font-semibold text-red-900 flex items-center gap-2">
@@ -204,9 +277,14 @@ function Categories() {
                             <Tag className="w-5 h-5 text-red-600" />
                           </div>
                           <div>
-                            <p className="font-medium text-gray-900">{category.name}</p>
+                            <p className="font-medium text-gray-900">
+                              {category.name}
+                            </p>
                             <p className="text-xs text-gray-500">
-                              Created {new Date(category.created_at).toLocaleDateString()}
+                              Created{" "}
+                              {new Date(
+                                category.created_at
+                              ).toLocaleDateString()}
                             </p>
                           </div>
                         </div>
@@ -236,10 +314,7 @@ function Categories() {
 
       {/* Category Modal */}
       {modalOpen && (
-        <CategoryModal
-          category={editingCategory}
-          onClose={handleModalClose}
-        />
+        <CategoryModal category={editingCategory} onClose={handleModalClose} />
       )}
     </div>
   );

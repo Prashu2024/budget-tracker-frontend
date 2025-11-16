@@ -101,16 +101,16 @@ function Login({ onLogin }) {
           </form>
 
           {/* Demo Credentials */}
-          <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          {/* <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
             <p className="text-sm font-medium text-blue-900 mb-2">Demo Credentials:</p>
             <p className="text-sm text-blue-700">Username: <span className="font-mono">demo</span></p>
             <p className="text-sm text-blue-700">Password: <span className="font-mono">demo123</span></p>
-          </div>
+          </div> */}
         </div>
 
-        <p className="text-center text-sm text-gray-600 mt-6">
+        {/* <p className="text-center text-sm text-gray-600 mt-6">
           Built with Django REST Framework & React
-        </p>
+        </p> */}
       </div>
     </div>
   );
